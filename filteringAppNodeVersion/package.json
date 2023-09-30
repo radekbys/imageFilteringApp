@@ -1,0 +1,17 @@
+{
+  "name": "imagefiltering",
+  "version": "1.0.0",
+  "description": "App for filtering images",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Radosław Bryś",
+  "license": "ISC",
+  "dependencies": {
+    "jimp": "^0.22.10"
+  },
+  "devDependencies": {
+    "eslint": "^8.50.0"
+  }
+}
