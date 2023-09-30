@@ -1,7 +1,7 @@
 This is an image filtering app I'm writing as my engineering project.
 
 
-Plan
+Plan:
 - A node app that will take command line input and filter image saved on the hard drive. 
   Uses Jimp module for reading and dissecting the bitmap.
   Takes as iput the image filename, output image name, used filter acronym.
