@@ -4,7 +4,7 @@ import './Footer.css';
 function Footer() {
   return (
     <div className="footer">
-      <small>Written by Radosław Bryś, open source do whatever you want</small>
+      <small>Written by Radosław Bryś</small>
     </div>
   );
 }
