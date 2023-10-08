@@ -30,4 +30,6 @@
 .nav-bar--button {
   color: blanchedalmond;
   background-color: black;
+  font-size: large;
+  border-radius: 8px;
 }
