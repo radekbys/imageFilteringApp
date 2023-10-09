@@ -1,0 +1,41 @@
+.form-header{
+  margin-bottom: 4px;
+  grid-area: 1 / 1 / 1 / 4;
+}
+
+.admin-panel {
+  margin-left:5%;
+}
+
+.admin-panel form {
+  font-family:sans-serif;
+  color:bisque;
+  display: grid;
+  grid-template-columns: 250px 250px 100px;
+  grid-template-rows: auto;
+}
+
+.admin-panel button {
+  grid-row:3;
+  width:50%;
+  margin-left:12.5%;
+  margin-top: 4px;
+}
+
+.admin-all-users {
+  color: bisque;
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 250px 250px 100px;
+}
+
+.admin-all-users h2{
+  grid-area: 1 / 1 / 1 / 4;
+  margin-bottom: 4px;
+}
+
+.admin-all-users p {
+  display: block;
+  margin: 4px;
+  background-color: rgb(72, 23, 117);
+}
