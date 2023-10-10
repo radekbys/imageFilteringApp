@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import Nav from '../nav/Nav';
-import Footer from '../footer/Footer';
 import Filter from '../filter/Filter';
 import Admin from '../admin/Admin';
 import Login from '../login/Login';
@@ -47,7 +46,6 @@ function App() {
       {main.filtration && <Filter />}
       {main.login && <Login />}
       {main.administration && <Admin />}
-      <Footer />
     </div>
   );
 }

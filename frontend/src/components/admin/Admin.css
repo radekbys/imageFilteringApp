@@ -31,10 +31,11 @@
 }
 
 .admin-all-users {
+  font-family:sans-serif;
   color: bisque;
   margin-top: 40px;
   display: grid;
-  grid-template-columns: 250px 250px 100px;
+  grid-template-columns: 250px 400px 100px;
 }
 
 .admin-all-users h2{
@@ -46,4 +47,19 @@
   display: block;
   margin: 4px;
   background-color: rgb(72, 23, 117);
+}
+
+.all-users-list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  display: grid;
+}
+.all-users-list-element{
+  grid-template-columns: 250px 400px 100px;
+  display:grid;
+}
+
+.admin-all-users h3 {
+  margin: 0;
 }

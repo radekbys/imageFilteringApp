@@ -1,12 +1,11 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import './Nav.css';
 
-// eslint-disable-next-line react/prop-types
 function Nav({ toggleLogin, toggleFiltration, toggleAdmin }) {
   return (
     <div>
       <nav className="navigation-bar">
-        <div className="navigation-bar--acronym">FO</div>
+        <div className="navigation-bar--acronym">IF</div>
         <ul className="navigation-bar--elements">
           <li className="navigation-bar--element">
             <button

@@ -1,0 +1,20 @@
+.login-main-body {
+  margin-left: 10%;
+  margin-top: 5%;
+  display:grid;
+  grid-template-columns: 250px;
+  font-family: sans-serif;
+  color: bisque;
+}
+
+.login-form-label > p {
+  margin-bottom: 2px;
+}
+
+.login-button {
+  grid-row: 4;
+  grid-column: 2;
+  background-color: transparent;
+  margin-top: 4%;
+  color: bisque;
+}
