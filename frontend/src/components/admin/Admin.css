@@ -7,19 +7,27 @@
   margin-left:5%;
 }
 
+.admin-panel button {
+  width:50%;
+  height: 50%;
+  margin-top: 16px;
+  background-color: transparent;
+  color: bisque;
+  border-radius: 8px;
+}
+
+.admin-panel input {
+  background-color: transparent;
+  border-radius: 8px;
+  color: bisque;
+}
+
 .admin-panel form {
   font-family:sans-serif;
   color:bisque;
   display: grid;
   grid-template-columns: 250px 250px 100px;
   grid-template-rows: auto;
-}
-
-.admin-panel button {
-  grid-row:3;
-  width:50%;
-  margin-left:12.5%;
-  margin-top: 4px;
 }
 
 .admin-all-users {
