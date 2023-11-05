@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './Admin.css';
 import NewUserForm from '../newUserForm/NewUserForm';
 import RemoveUserForm from '../removeUserForm/RemoveUserForm';
+import ManagePrivilegesForm from '../managePrivilegesForm/ManagePrivilegesForm';
 import dummyUsers from '../../utils/dummyUsers';
 
 function Admin() {
@@ -27,6 +28,8 @@ function Admin() {
       <NewUserForm />
       <br />
       <RemoveUserForm />
+      <br />
+      <ManagePrivilegesForm />
       <br />
       <div className="admin-all-users">
         <h2>All Users:</h2>
