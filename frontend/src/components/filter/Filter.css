@@ -10,3 +10,12 @@
   font-family: sans-serif;
   color: bisque;
 }
+
+.filter-view-button {
+  width:240px;
+  height: 24px;
+  margin-top: 0px;
+  background-color: transparent;
+  color: bisque;
+  border-radius: 8px;
+}

@@ -1,0 +1,28 @@
+{
+  "type": "module",
+  "dependencies": {
+    "express": "^4.18.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.53.0",
+    "eslint-config-airbnb-base": "^15.0.0"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "server part of the image filtering app, communicates with frontend and invokes filtering app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radekbys/imageFilteringApp.git"
+  },
+  "author": "Radosław Bryś",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/radekbys/imageFilteringApp/issues"
+  },
+  "homepage": "https://github.com/radekbys/imageFilteringApp#readme"
+}
