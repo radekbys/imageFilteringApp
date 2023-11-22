@@ -1,8 +1,5 @@
 .filter-image {
-  margin-left: 10%;
-  margin-top: 5%;
-  margin-bottom: 5%;
-  margin-right: 10%;
+margin-top: 0px;
 }
 
 .filter-view {
@@ -18,4 +15,9 @@
   background-color: transparent;
   color: bisque;
   border-radius: 8px;
+}
+
+.filter-image-title{
+  margin-top: 32px;
+  margin-bottom: 0px;
 }
