@@ -22,5 +22,5 @@ Tech stack:
 - sanitize-filename module (ISC)
 - express.js
 - React
-- (optional) CUDA
-- (optional) C
+- C
+- cJSON library

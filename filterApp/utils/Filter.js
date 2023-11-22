@@ -60,7 +60,7 @@ class Filter {
       image: [...buffer],
     };
     const passedJson = JSON.stringify(passedObject);
-    writeFileSync('parameter.txt', passedJson);
+    writeFileSync('./utils/medianFilterC/parameters.json', passedJson);
     return buffer;
   }
 }

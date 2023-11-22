@@ -26,7 +26,7 @@ filterRouter
     }
     await writeFile(`../images/${req.body.user}-input${filenameExtension}`, req.body['file-base64'], { encoding: 'base64' });
     await promisifiedExec(
-      `node ../filterAppNodeVersion/index.js ${filterName} ${`${req.body.user}-input${filenameExtension}`} ${`${req.body.user}-output${filenameExtension}`}`,
+      `node ../filterApp/index.js ${filterName} ${`${req.body.user}-input${filenameExtension}`} ${`${req.body.user}-output${filenameExtension}`}`,
     );
     res.status = 200;
     res.send('OK');
