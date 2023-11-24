@@ -45,7 +45,7 @@ if (process.argv[2] === 'median') {
   (async () => {
     const image = await Jimp.read(inputFile);
     // const time = Date.now();
-    const filteredBuffer = Filter.medianFilter(
+    const filteredBuffer = await Filter.medianFilter(
       image.bitmap.data,
       image.bitmap.width,
       image.bitmap.height,

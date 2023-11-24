@@ -1,4 +1,7 @@
-const { writeFileSync } = require('fs');
+const { writeFile, readFile, unlink } = require('fs').promises;
+const { exec } = require('child_process');
+const { promisify } = require('util');
+const { v4: uuid } = require('uuid');
 
 class Filter {
   // function that filters the image using simple filters
@@ -53,15 +56,26 @@ class Filter {
   }
 
   // creates a json with parameters and passes it to a C program
-  static medianFilter(buffer, width, height) {
+  static async medianFilter(buffer, width, height) {
+    const promisifiedExec = promisify(exec);
     const passedObject = {
       width,
       height,
       image: [...buffer],
     };
     const passedJson = JSON.stringify(passedObject);
-    writeFileSync('./utils/medianFilterC/parameters.json', passedJson);
-    return buffer;
+    const name = uuid();
+    // save to json
+    await writeFile(`./utils/medianFilterC/${name}.json`, passedJson);
+    // run the filter
+    await promisifiedExec(`cd utils && cd medianFilterC && ./main ${name}.json`);
+    // read the result
+    const result = await readFile(`./utils/medianFilterC/output-${name}.json`, { encoding: 'utf8' });
+    // delete temporary files
+    await unlink(`./utils/medianFilterC/${name}.json`);
+    await unlink(`./utils/medianFilterC/output-${name}.json`);
+    // return the buffer
+    return Buffer.from(JSON.parse(result).image);
   }
 }
 
