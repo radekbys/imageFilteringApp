@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <memory.h>
+#include <pthread.h>
+
+#define MASK_RADIUS 2
+#define BYTES_PER_PIXEL 4
 
 // function for reading a file into memory
 char *read_file(char *filename) {
@@ -72,7 +76,42 @@ void save_to_file(const char *filename, unsigned int * image, unsigned int size)
   free(output_name);
 }
 
+// arguments for 
+struct thread_function_argument{
+  unsigned int *image;
+  unsigned int *image_copy;
+  unsigned int row;
+  unsigned int in_row;
+};
 
+//compare function, used by quicksort
+int cmpfunc (const void * a, const void * b) {
+   return ( *(int*)a - *(int*)b );
+}
+
+// thread function, filters one row of the image
+void *thread_fuction( void *arg ){
+  //all variables
+  struct thread_function_argument *argument = (struct thread_function_argument *)arg;
+  int first = ((*argument).in_row*(*argument).row) + (MASK_RADIUS*BYTES_PER_PIXEL);
+  int last = (*argument).in_row-(MASK_RADIUS*BYTES_PER_PIXEL) + ((*argument).in_row*(*argument).row);
+  unsigned int array[25]; // filter mask
+  unsigned int index;
+  
+  for(int i = first; i < last; i++){
+    //get all the neighboring pixels into array
+    for(int j = - MASK_RADIUS; j<= MASK_RADIUS; j++){
+      for(int k = - MASK_RADIUS; k <= MASK_RADIUS; k++){
+        index = ((*argument).in_row * j)+(k*BYTES_PER_PIXEL) + i;
+        array[((j+2)*5)+(k+2)] =(*argument).image[index];
+      }
+    }
+    //sort the array
+    qsort(array, 25,sizeof(unsigned int), cmpfunc);
+    //put the result into copy image
+    (*argument).image_copy[i] = array[12];
+  }
+}
 
 int main(int argc, char *argv[]) {
 
@@ -97,17 +136,57 @@ int main(int argc, char *argv[]) {
   char char_coma = ',';
   strncat(numbers, &char_coma , 1);
 
+  // get all the needed parameters as unsigned int
   get_width_height(&width, &height, width_string, height_string);
-  unsigned int image_size= width*height*4;
+  unsigned int image_size= width*height*BYTES_PER_PIXEL;
   image = get_image_as_array(numbers, image_size);
 
-  // ------------------------------------------------------------------------------------------------
-  // main algorithm
-  for (int i =0; i < image_size; i++) image[i] = 255;
+  //copy the image
+  unsigned int *image_copy = (unsigned int*) malloc(image_size * sizeof(unsigned int));
+  memcpy(image_copy, image, image_size * sizeof(unsigned int));
 
-  //-------------------------------------------------------------------------------------------------
-  save_to_file(argv[1], image, image_size);
+  //allocating memory for threads and parameters
+  int number_of_threads = height -(2 * MASK_RADIUS);
+  pthread_t **threads = (pthread_t **) malloc(sizeof(pthread_t*)*number_of_threads);
+  struct thread_function_argument ** arguments = (struct thread_function_argument **) malloc(sizeof(struct thread_function_argument*)*number_of_threads);
+  for(int i = 0; i<number_of_threads ; i++){
+    threads[i] = malloc(sizeof(pthread_t));
+    arguments[i] = malloc(sizeof(struct thread_function_argument));
+  }
+
+  // create threads and delegate rows
+  int row = MASK_RADIUS;
+  int in_row = width*BYTES_PER_PIXEL;
+  for (int i = 0 ; i < number_of_threads ; i++, row++){
+    struct thread_function_argument argument = {.image = image, .image_copy= image_copy, .row = row, .in_row = in_row};
+    *arguments[i] = argument;
+    pthread_create(threads[i], NULL, thread_fuction, (void *)arguments[i]);
+  }
+
+  //wait till threads end executing
+  for(int i=0; i<number_of_threads ; i++){
+    pthread_join(*threads[i], NULL);
+  }
+  // save output to file
+  save_to_file(argv[1], image_copy, image_size);
+
+  // freeing memory
   free(filename);
+  filename = NULL;
   free(image);
+  image = NULL;
+  free(image_copy);
+  image_copy = NULL;
+  for(int i = 0; i<number_of_threads ; i++){
+    free(threads[i]);
+    threads[i] = NULL;
+    free(arguments[i]);
+    arguments[i] = NULL;
+  }
+  free(threads);
+  threads = NULL;
+  free(arguments);
+  arguments = NULL;
+
   return 0;
 }

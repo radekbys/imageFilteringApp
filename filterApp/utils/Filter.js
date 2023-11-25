@@ -67,8 +67,14 @@ class Filter {
     const name = uuid();
     // save to json
     await writeFile(`./utils/medianFilterC/${name}.json`, passedJson);
+
+    const time = Date.now(); // comment this out
+
     // run the filter
     await promisifiedExec(`cd utils && cd medianFilterC && ./main ${name}.json`);
+
+    console.log(Date.now() - time); // comment this out
+
     // read the result
     const result = await readFile(`./utils/medianFilterC/output-${name}.json`, { encoding: 'utf8' });
     // delete temporary files

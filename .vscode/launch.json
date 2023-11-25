@@ -10,7 +10,7 @@
     "request": "launch",
     "program": "/home/radek/projects/imageFilteringApp/filterApp/utils/medianFilterC/main",
     "args": [
-      "65d7db8e-5258-4e7d-947d-6eaba801a41e.json"
+      "test.json"
     ],
     "stopAtEntry": false,
     "cwd": "/home/radek/projects/imageFilteringApp/filterApp/utils/medianFilterC",

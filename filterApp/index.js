@@ -28,30 +28,30 @@ const outputFile = `../images/${sanitize(process.argv[4])}`;
 
 if (usedSimpleFilter) {
   (async () => {
+    const time = Date.now(); // comment this out
     const image = await Jimp.read(inputFile);
-    // const time = Date.now();
     const filteredBuffer = Filter.simpleFilter(
       image.bitmap.data,
       image.bitmap.width,
       image.bitmap.height,
       usedSimpleFilter,
     );
-    // console.log(Date.now() - time);
     image.bitmap.data = filteredBuffer;
     image.write(outputFile);
+    console.log(Date.now() - time); // comment this out
   })();
 }
 if (process.argv[2] === 'median') {
   (async () => {
+    const time = Date.now(); // comment this out
     const image = await Jimp.read(inputFile);
-    // const time = Date.now();
     const filteredBuffer = await Filter.medianFilter(
       image.bitmap.data,
       image.bitmap.width,
       image.bitmap.height,
     );
-    // console.log(Date.now() - time);
     image.bitmap.data = filteredBuffer;
     image.write(outputFile);
+    console.log(Date.now() - time); // comment this out
   })();
 }
