@@ -55,3 +55,21 @@ if (process.argv[2] === 'median') {
     console.log(Date.now() - time); // comment this out
   })();
 }
+
+if (process.argv[2] === 'bayess') {
+  (async () => {
+    const time = Date.now(); // comment this out
+    const image = await Jimp.read(inputFile);
+    let epsilon = Number(process.argv[5]);
+    if (epsilon < 0.00000000000000000000000006) epsilon = 1;
+    const filteredBuffer = await Filter.bayessFilter(
+      image.bitmap.data,
+      image.bitmap.width,
+      image.bitmap.height,
+      epsilon,
+    );
+    image.bitmap.data = filteredBuffer;
+    image.write(outputFile);
+    console.log(Date.now() - time); // comment this out
+  })();
+}

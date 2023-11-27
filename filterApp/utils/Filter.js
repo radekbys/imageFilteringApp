@@ -83,6 +83,36 @@ class Filter {
     // return the buffer
     return Buffer.from(JSON.parse(result).image);
   }
+
+  // creates a json with parameters and passes it to a C program
+  static async bayessFilter(buffer, width, height, epsilon) {
+    const promisifiedExec = promisify(exec);
+    const passedObject = {
+      width,
+      height,
+      epsilon,
+      image: [...buffer],
+    };
+    const passedJson = JSON.stringify(passedObject);
+    const name = uuid();
+    // save to json
+    await writeFile(`./utils/bayessFilterC/${name}.json`, passedJson);
+
+    const time = Date.now(); // comment this out
+
+    // run the filter
+    await promisifiedExec(`cd utils && cd bayessFilterC && ./main ${name}.json`);
+
+    console.log(Date.now() - time); // comment this out
+
+    // read the result
+    const result = await readFile(`./utils/bayessFilterC/output-${name}.json`, { encoding: 'utf8' });
+    // delete temporary files
+    await unlink(`./utils/bayessFilterC/${name}.json`);
+    await unlink(`./utils/bayessFilterC/output-${name}.json`);
+    // return the buffer
+    return Buffer.from(JSON.parse(result).image);
+  }
 }
 
 module.exports = { Filter };

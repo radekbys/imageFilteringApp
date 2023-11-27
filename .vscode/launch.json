@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-    "name": "(gdb) Launch",
+    "name": "(gdb) Launch median",
     "type": "cppdbg",
     "request": "launch",
     "program": "/home/radek/projects/imageFilteringApp/filterApp/utils/medianFilterC/main",
@@ -35,5 +35,31 @@
   "name": "Run npm start",
   "request": "launch",
   "type": "node-terminal"
-}]
+},
+{
+  "name": "(gdb) Launch bayess",
+  "type": "cppdbg",
+  "request": "launch",
+  "program": "/home/radek/projects/imageFilteringApp/filterApp/utils/bayessFilterC/main",
+  "args": [
+    "test.json"
+  ],
+  "stopAtEntry": false,
+  "cwd": "/home/radek/projects/imageFilteringApp/filterApp/utils/bayessFilterC",
+  "environment": [],
+  "externalConsole": false,
+  "MIMode": "gdb",
+  "setupCommands": [
+      {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+      },
+      {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+      }
+  ]
+},]
 }
