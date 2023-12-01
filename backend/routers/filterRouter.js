@@ -3,6 +3,7 @@ import { writeFile, readFile } from 'fs/promises';
 // import { v4 as uuidv4 } from 'uuid';
 import util from 'util';
 import { exec } from 'child_process';
+import { resolve } from 'path';
 
 const filterRouter = express.Router();
 const promisifiedExec = util.promisify(exec);
@@ -24,10 +25,10 @@ filterRouter
     } else {
       throw new Error('Invalid filetype, must be one of : image/jpeg, image/png, image/bmp, image/gif, image/tiff');
     }
+    const path = resolve('../filterApp/index.js');
+    const command = `node ${path} ${filterName} ${`${req.body.user}-input${filenameExtension}`} ${`${req.body.user}-output${filenameExtension}`} ${Number(req.body.epsilon)}`;
     await writeFile(`../images/${req.body.user}-input${filenameExtension}`, req.body['file-base64'], { encoding: 'base64' });
-    await promisifiedExec(
-      `node ../filterApp/index.js ${filterName} ${`${req.body.user}-input${filenameExtension}`} ${`${req.body.user}-output${filenameExtension}`}`,
-    );
+    await promisifiedExec(command);
     res.status = 200;
     res.send('OK');
   })

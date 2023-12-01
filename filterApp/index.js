@@ -1,5 +1,6 @@
 const Jimp = require('jimp');
 const sanitize = require('sanitize-filename');
+const { resolve } = require('path');
 const { Filter } = require('./utils/Filter');
 const { lowPassFilters } = require('./filters/lowPassFilters');
 const { highPassFilters } = require('./filters/highPassFilters ');
@@ -23,12 +24,11 @@ const usedSimpleFilter = getFilterIfInObject(process.argv[2], lowPassFilters)
 || getFilterIfInObject(process.argv[2], laplaceFilters)
 || getFilterIfInObject(process.argv[2], contourFilters);
 
-const inputFile = `../images/${sanitize(process.argv[3])}`;
-const outputFile = `../images/${sanitize(process.argv[4])}`;
+const inputFile = resolve(__dirname, `../images/${sanitize(process.argv[3])}`);
+const outputFile = resolve(__dirname, `../images/${sanitize(process.argv[4])}`);
 
 if (usedSimpleFilter) {
-  (async () => {
-    const time = Date.now(); // comment this out
+  const sequence = async () => {
     const image = await Jimp.read(inputFile);
     const filteredBuffer = Filter.simpleFilter(
       image.bitmap.data,
@@ -38,12 +38,12 @@ if (usedSimpleFilter) {
     );
     image.bitmap.data = filteredBuffer;
     image.write(outputFile);
-    console.log(Date.now() - time); // comment this out
-  })();
+  };
+  sequence();
 }
+
 if (process.argv[2] === 'median') {
-  (async () => {
-    const time = Date.now(); // comment this out
+  const sequence = async () => {
     const image = await Jimp.read(inputFile);
     const filteredBuffer = await Filter.medianFilter(
       image.bitmap.data,
@@ -52,13 +52,12 @@ if (process.argv[2] === 'median') {
     );
     image.bitmap.data = filteredBuffer;
     image.write(outputFile);
-    console.log(Date.now() - time); // comment this out
-  })();
+  };
+  sequence();
 }
 
 if (process.argv[2] === 'bayess') {
-  (async () => {
-    const time = Date.now(); // comment this out
+  const sequence = async () => {
     const image = await Jimp.read(inputFile);
     let epsilon = Number(process.argv[5]);
     if (epsilon < 0.00000000000000000000000006) epsilon = 1;
@@ -70,6 +69,6 @@ if (process.argv[2] === 'bayess') {
     );
     image.bitmap.data = filteredBuffer;
     image.write(outputFile);
-    console.log(Date.now() - time); // comment this out
-  })();
+  };
+  sequence();
 }

@@ -9,6 +9,11 @@ function Filter() {
   const [fileBase64, setFileBase64] = useState(undefined);
   const [filter, setFilter] = useState(undefined);
   const [outputBase64Url, setOutputBase64Url] = useState(undefined);
+  const [epsilonParameter, setEpsilonParameter] = useState(1); // user defined parameter used by the bayessian filter
+
+  const changeEpsilon = (e) => {
+    setEpsilonParameter(e.target.value);
+  };
 
   // function for encoding uploaded image to base 64
   const encodeFileBase64 = (encodedFile) => {
@@ -53,6 +58,7 @@ function Filter() {
           'filter-name': filter,
           type: file.type,
           user: 'dummyUser', // <-- change dummyUser
+          epsilon: epsilonParameter,
           'file-base64': fileBase64,
         }),
       });
@@ -75,6 +81,12 @@ function Filter() {
       <br />
       <FiltersSpan filterChange={handleFilterChange} />
       <br />
+      {(filter === 'bayess') && (
+      <div className="epsilon-div">
+        <h2 className="epsilon-header">Set the epsilon parameter:</h2>
+        <input type="number" value={epsilonParameter} onChange={changeEpsilon} />
+      </div>
+      )}
       <button
         type="button"
         onClick={filterAndRetriveImage}

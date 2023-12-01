@@ -66,20 +66,16 @@ class Filter {
     const passedJson = JSON.stringify(passedObject);
     const name = uuid();
     // save to json
-    await writeFile(`./utils/medianFilterC/${name}.json`, passedJson);
-
-    const time = Date.now(); // comment this out
+    await writeFile(`${__dirname}/medianFilterC/${name}.json`, passedJson);
 
     // run the filter
-    await promisifiedExec(`cd utils && cd medianFilterC && ./main ${name}.json`);
-
-    console.log(Date.now() - time); // comment this out
+    await promisifiedExec(`cd ${__dirname}/medianFilterC && ./main ${name}.json`);
 
     // read the result
-    const result = await readFile(`./utils/medianFilterC/output-${name}.json`, { encoding: 'utf8' });
+    const result = await readFile(`${__dirname}/medianFilterC/output-${name}.json`, { encoding: 'utf8' });
     // delete temporary files
-    await unlink(`./utils/medianFilterC/${name}.json`);
-    await unlink(`./utils/medianFilterC/output-${name}.json`);
+    await unlink(`${__dirname}/medianFilterC/${name}.json`);
+    await unlink(`${__dirname}/medianFilterC/output-${name}.json`);
     // return the buffer
     return Buffer.from(JSON.parse(result).image);
   }
@@ -90,26 +86,23 @@ class Filter {
     const passedObject = {
       width,
       height,
-      epsilon,
+      epsilon: epsilon || 1,
       image: [...buffer],
     };
     const passedJson = JSON.stringify(passedObject);
     const name = uuid();
     // save to json
-    await writeFile(`./utils/bayessFilterC/${name}.json`, passedJson);
-
-    const time = Date.now(); // comment this out
+    await writeFile(`${__dirname}/bayessFilterC/${name}.json`, passedJson);
 
     // run the filter
-    await promisifiedExec(`cd utils && cd bayessFilterC && ./main ${name}.json`);
-
-    console.log(Date.now() - time); // comment this out
+    await promisifiedExec(`cd ${__dirname}/bayessFilterC && ./main ${name}.json`);
 
     // read the result
-    const result = await readFile(`./utils/bayessFilterC/output-${name}.json`, { encoding: 'utf8' });
+    const result = await readFile(`${__dirname}/bayessFilterC/output-${name}.json`, { encoding: 'utf8' });
+
     // delete temporary files
-    await unlink(`./utils/bayessFilterC/${name}.json`);
-    await unlink(`./utils/bayessFilterC/output-${name}.json`);
+    await unlink(`${__dirname}/bayessFilterC/${name}.json`);
+    await unlink(`${__dirname}/bayessFilterC/output-${name}.json`);
     // return the buffer
     return Buffer.from(JSON.parse(result).image);
   }

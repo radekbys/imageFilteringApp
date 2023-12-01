@@ -133,8 +133,8 @@ void *thread_fuction( void *arg ){
 
     for(int k = 1; 1; k++){ //set the iterator k=1
     // 2. Calculate the hyperparameter αi for i = 1, 2, . . . , D and β (k)
-    B_k = (1.0 / g_xyk)/g_xyk;
-    for(int j =0; j<MASK_SIZE; j++) a_ik[j]=(1.0/(t[j]-g_xyk))/(t[j]-g_xyk);
+    B_k = 1.0 / (g_xyk*g_xyk);
+    for(int j =0; j<MASK_SIZE; j++) a_ik[j]=1.0/((t[j]-g_xyk)*(t[j]-g_xyk));
 
     // 3. Update the average g(x, y)(k) for kth iteration.
     sum_aik_ti = 0;
