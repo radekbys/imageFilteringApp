@@ -1,7 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import './ManagePrivilegesForm.css';
+import serverUrl from '../../serverURL.json';
 
-function ManagePrivilegesForm() {
+function ManagePrivilegesForm(props) {
+  const { toggleRefreshUsers } = props;
   const [managePrivilegesInputs, setManagePrivilegesInputs] = useState({
     username: '',
     giveAdmin: false,
@@ -32,14 +35,28 @@ function ManagePrivilegesForm() {
     }
   };
 
-  const submitManagePrivilegesForm = (event) => {
+  const submitManagePrivilegesForm = async (event) => {
     event.preventDefault();
-    console.log(managePrivilegesInputs);
+    if (!managePrivilegesInputs.giveAdmin && !managePrivilegesInputs.removeAdmin) {
+      return;
+    }
+    const requestObject = {
+      username: managePrivilegesInputs.username,
+      isAdmin: managePrivilegesInputs.giveAdmin,
+    };
+
+    await fetch(`${serverUrl.url}/admin/user`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestObject),
+    });
+
     setManagePrivilegesInputs({
       username: '',
       giveAdmin: false,
       removeAdmin: false,
     });
+    toggleRefreshUsers();
   };
 
   return (

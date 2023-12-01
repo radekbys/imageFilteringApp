@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import './RemoveUserForm.css';
+import serverUrl from '../../serverURL.json';
 
-function RemoveUserForm() {
-  // eslint-disable-next-line no-unused-vars
+function RemoveUserForm(props) {
+  const { toggleRefreshUsers } = props;
   const [removedUser, setRemovedUser] = useState({ username: '' });
 
   const updateRemovedUser = (event) => {
@@ -12,12 +14,20 @@ function RemoveUserForm() {
     });
   };
 
-  const removeUser = (event) => {
+  const removeUser = async (event) => {
     event.preventDefault();
-    console.log(removedUser);
+
+    await fetch(`${serverUrl.url}/admin/user`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(removedUser),
+    });
+
     setRemovedUser({
       username: '',
     });
+
+    toggleRefreshUsers();
   };
 
   return (

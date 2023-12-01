@@ -1,8 +1,11 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import './NewUserForm.css';
+import serverUrl from '../../serverURL.json';
 
-function NewUserForm() {
-// eslint-disable-next-line no-unused-vars
+function NewUserForm(props) {
+  const { toggleRefreshUsers } = props;
+  // eslint-disable-next-line no-unused-vars
   const [newUser, setNewUser] = useState({
     newUsername: '',
     newEmail: '',
@@ -20,15 +23,22 @@ function NewUserForm() {
     });
   };
 
-  const submitNewUser = (event) => {
+  const submitNewUser = async (event) => {
     event.preventDefault();
-    console.log(newUser);
+
+    await fetch(`${serverUrl.url}/admin/user`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newUser),
+    });
+
     setNewUser({
       newUsername: '',
       newEmail: '',
       newAdmin: false,
       newPassword: '',
     });
+    toggleRefreshUsers();
   };
 
   return (

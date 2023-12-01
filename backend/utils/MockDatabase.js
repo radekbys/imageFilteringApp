@@ -6,27 +6,31 @@ class MockDatabase {
       {
         username: 'dummyUser1',
         isAdmin: false,
+        email: 'dummyUser1@gmail.com',
         passwordHash: sha256('password'),
       },
       {
         username: 'dummyUser2',
         isAdmin: false,
+        email: 'dummyUser2@gmail.com',
         passwordHash: sha256('password'),
       },
       {
         username: 'dummyUser3',
         isAdmin: false,
+        email: 'dummyUser3@gmail.com',
         passwordHash: sha256('password'),
       },
       {
         username: 'dummyAdmin1',
         isAdmin: true,
+        email: 'dummyAdmin1@gmail.com',
         passwordHash: sha256('password'),
       },
     ];
   }
 
-  getData() {
+  getUsers() {
     return this.data;
   }
 
@@ -34,10 +38,11 @@ class MockDatabase {
     return this.data.find((element) => element.username === username);
   }
 
-  addUser(username, password, isAdmin) {
+  addUser(username, password, isAdmin, email) {
     const user = {
       username,
       isAdmin,
+      email,
       passwordHash: sha256(password),
     };
     this.data.push(user);
