@@ -11,45 +11,59 @@ const promisifiedExec = util.promisify(exec);
 filterRouter
   .post('/', async (req, res) => {
     const filterName = req.body['filter-name'];
-    let filenameExtension;
-    if (req.body.type === 'image/jpeg') {
-      filenameExtension = '.jpg';
-    } else if (req.body.type === 'image/png') {
-      filenameExtension = '.png';
-    } else if (req.body.type === 'image/bmp') {
-      filenameExtension = '.bmp';
-    } else if (req.body.type === 'image/gif') {
-      filenameExtension = '.gif';
-    } else if (req.body.type === 'image/tiff') {
-      filenameExtension = '.tiff';
-    } else {
-      throw new Error('Invalid filetype, must be one of : image/jpeg, image/png, image/bmp, image/gif, image/tiff');
+    try {
+      let filenameExtension;
+      if (req.body.type === 'image/jpeg') {
+        filenameExtension = '.jpg';
+      } else if (req.body.type === 'image/png') {
+        filenameExtension = '.png';
+      } else if (req.body.type === 'image/bmp') {
+        filenameExtension = '.bmp';
+      } else if (req.body.type === 'image/gif') {
+        filenameExtension = '.gif';
+      } else if (req.body.type === 'image/tiff') {
+        filenameExtension = '.tiff';
+      } else {
+        const error = new Error('Invalid filetype, must be one of : image/jpeg, image/png, image/bmp, image/gif, image/tiff');
+        error.status = 400;
+        throw error;
+      }
+      const path = resolve('../filterApp/index.js');
+      const command = `node ${path} ${filterName} ${`${req.body.user}-input${filenameExtension}`} ${`${req.body.user}-output${filenameExtension}`} ${Number(req.body.epsilon)}`;
+      await writeFile(`../images/${req.body.user}-input${filenameExtension}`, req.body['file-base64'], { encoding: 'base64' });
+      await promisifiedExec(command);
+      res.status = 200;
+      res.send('OK');
+    } catch (error) {
+      res.status(error.status || 500);
+      res.send({ error: error.message });
     }
-    const path = resolve('../filterApp/index.js');
-    const command = `node ${path} ${filterName} ${`${req.body.user}-input${filenameExtension}`} ${`${req.body.user}-output${filenameExtension}`} ${Number(req.body.epsilon)}`;
-    await writeFile(`../images/${req.body.user}-input${filenameExtension}`, req.body['file-base64'], { encoding: 'base64' });
-    await promisifiedExec(command);
-    res.status = 200;
-    res.send('OK');
   })
   .get('/', async (req, res) => {
     const { username, type } = req.query;
-    let filenameExtension;
-    if (type === 'image/jpeg') {
-      filenameExtension = '.jpg';
-    } else if (type === 'image/png') {
-      filenameExtension = '.png';
-    } else if (type === 'image/bmp') {
-      filenameExtension = '.bmp';
-    } else if (type === 'image/gif') {
-      filenameExtension = '.gif';
-    } else if (type === 'image/tiff') {
-      filenameExtension = '.tiff';
-    } else {
-      throw new Error('Invalid filetype, must be one of : image/jpeg, image/png, image/bmp, image/gif, image/tiff');
+    try {
+      let filenameExtension;
+      if (type === 'image/jpeg') {
+        filenameExtension = '.jpg';
+      } else if (type === 'image/png') {
+        filenameExtension = '.png';
+      } else if (type === 'image/bmp') {
+        filenameExtension = '.bmp';
+      } else if (type === 'image/gif') {
+        filenameExtension = '.gif';
+      } else if (type === 'image/tiff') {
+        filenameExtension = '.tiff';
+      } else {
+        const error = new Error('Invalid filetype, must be one of : image/jpeg, image/png, image/bmp, image/gif, image/tiff');
+        error.status = 400;
+        throw error;
+      }
+      const output = await readFile(`../images/${username}-output${filenameExtension}`, 'base64');
+      res.json(output);
+    } catch (error) {
+      res.status(error.status || 500);
+      res.send({ error: error.message });
     }
-    const output = await readFile(`../images/${username}-output${filenameExtension}`, 'base64');
-    res.json(output);
   });
 
 export default filterRouter;

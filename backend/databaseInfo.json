@@ -1,4 +1,6 @@
 {
+  "databaseName": "filteringAppDatabase",
+  "ipAddress": "127.0.0.1",
   "username": "userFilter",
-  "password": "filtersPasswd"
+  "password": "passwd"
 }
