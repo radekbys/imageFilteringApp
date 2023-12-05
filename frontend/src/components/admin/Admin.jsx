@@ -35,10 +35,16 @@ function Admin() {
 
   useEffect(() => {
     const sequence = async () => {
-      const temp = await fetch(`${serverUrl.url}/admin/user`, {
+      const res = await fetch(`${serverUrl.url}/admin/user`, {
         method: 'GET',
       });
-      setAllUsers(await temp.json());
+
+      if (res.status !== 200) {
+        console.log(await res.json());
+        return;
+      }
+
+      setAllUsers(await res.json());
     };
     sequence();
   }, [getUsersTrigger]);

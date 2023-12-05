@@ -4,6 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import filterRouter from './routers/filterRouter.js';
 import adminRouter from './routers/adminRouter.js';
+import loginRouter from './routers/loginRouter.js';
 
 const app = express();
 
@@ -32,8 +33,8 @@ app.use(bodyParser.raw({
 }));
 
 app.use('/filter', filterRouter);
-
 app.use('/admin', adminRouter);
+app.use('/login', loginRouter);
 
 app.get('/', (req, res) => {
   res.json('Welcome');

@@ -32,7 +32,7 @@ filterRouter
       const command = `node ${path} ${filterName} ${`${req.body.user}-input${filenameExtension}`} ${`${req.body.user}-output${filenameExtension}`} ${Number(req.body.epsilon)}`;
       await writeFile(`../images/${req.body.user}-input${filenameExtension}`, req.body['file-base64'], { encoding: 'base64' });
       await promisifiedExec(command);
-      res.status = 200;
+      res.status(200);
       res.send({ message: 'file posted and filtered' });
     } catch (error) {
       res.status(error.status || 500);

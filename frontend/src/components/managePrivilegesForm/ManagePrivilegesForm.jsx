@@ -45,11 +45,16 @@ function ManagePrivilegesForm(props) {
       isAdmin: managePrivilegesInputs.giveAdmin,
     };
 
-    await fetch(`${serverUrl.url}/admin/user`, {
+    const res = await fetch(`${serverUrl.url}/admin/user`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestObject),
     });
+
+    if (res.status !== 200) {
+      console.log(await res.json());
+      return;
+    }
 
     setManagePrivilegesInputs({
       username: '',

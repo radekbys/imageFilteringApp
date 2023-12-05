@@ -17,11 +17,16 @@ function RemoveUserForm(props) {
   const removeUser = async (event) => {
     event.preventDefault();
 
-    await fetch(`${serverUrl.url}/admin/user`, {
+    const res = await fetch(`${serverUrl.url}/admin/user`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(removedUser),
     });
+
+    if (res.status !== 200) {
+      console.log(await res.json());
+      return;
+    }
 
     setRemovedUser({
       username: '',

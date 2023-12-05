@@ -83,7 +83,7 @@ filterRouter
         isAdmin,
       );
 
-      res.status(201);
+      res.status(200);
       res.send({ message: 'User created successfully' });
     } catch (error) {
       res.status(error.status || 500);
