@@ -48,29 +48,44 @@ function Filter() {
   // in next step get filtered image and set it as outputBase64
   const filterAndRetriveImage = async (event) => {
     event.preventDefault();
-    try {
-      const res = await fetch(`${serverUrl.url}/filter`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          'filter-name': filter,
-          type: file.type,
-          user: 'dummyUser', // <-- change dummyUser
-          epsilon: epsilonParameter,
-          'file-base64': fileBase64,
-        }),
-      });
-      if (res.status === 200) {
-        const res2 = await fetch(`${serverUrl.url}/filter/?username=${'dummyUser'}&type=${file.type}`, { // <-- change dummyUser
-          method: 'GET',
-        });
-        const output = await res2.json();
-        setOutputBase64Url(`data:${file.type};base64,${output}`);
-      }
-    } catch (error) {
-      console.log(error);
+    const res = await fetch(`${serverUrl.url}/filter`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'filter-name': filter,
+        type: file.type,
+        user: 'dummyUser', // <-- change dummyUser
+        epsilon: epsilonParameter,
+        'file-base64': fileBase64,
+      }),
+    });
+    if (res.status !== 200) {
+      console.log(await res.json());
+      return;
+    }
+    const res2 = await fetch(`${serverUrl.url}/filter/?username=${'dummyUser'}&type=${file.type}`, { // <-- change dummyUser
+      method: 'GET',
+    });
+    if (res2.status !== 200) {
+      console.log(await res.json());
+      return;
+    }
+    const output = await res2.json();
+    setOutputBase64Url(`data:${file.type};base64,${output}`);
+    const res3 = await fetch(`${serverUrl.url}/filter`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: file.type,
+        username: 'dummyUser', // <-- change dummyUser
+      }),
+    });
+    if (res3.status !== 200) {
+      console.log(await res.json());
     }
   };
 

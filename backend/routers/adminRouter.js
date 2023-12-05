@@ -7,24 +7,34 @@ const filterRouter = express.Router();
 
 filterRouter
   .get('/user', async (req, res) => {
-    const response = (await dbHandler.getUsers()).map((user) => ({
-      username: user.username,
-      email: user.email,
-      isAdmin: Boolean(user.isAdmin),
-    }));
-    res.json(response);
+    try {
+      const response = (await dbHandler.getUsers()).map((user) => ({
+        username: user.username,
+        email: user.email,
+        isAdmin: Boolean(user.isAdmin),
+      }));
+      res.json(response);
+    } catch (error) {
+      res.status(error.status || 500);
+      res.send({ error: error.message });
+    }
   })
 
   .delete('/user', async (req, res) => {
-    const { username } = req.body;
-    await dbHandler.deleteUser(username);
-    res.send();
+    try {
+      const { username } = req.body;
+      await dbHandler.deleteUser(username);
+      res.send();
+    } catch (error) {
+      res.status(error.status || 500);
+      res.send({ error: error.message });
+    }
   })
 
   .patch('/user', async (req, res) => {
-    const { username } = req.body;
-    const isAdmin = !!req.body.isAdmin;
     try {
+      const { username } = req.body;
+      const isAdmin = !!req.body.isAdmin;
       if (!username || typeof username !== 'string') {
         const error = new Error('Invalid username, must be not empty');
         error.status = 400;
@@ -39,8 +49,8 @@ filterRouter
   })
 
   .post('/user', async (req, res) => {
-    const newUser = req.body;
     try {
+      const newUser = req.body;
       if (!newUser.newUsername || typeof newUser.newUsername !== 'string') {
         const error = new Error('Invalid username, must be not empty');
         error.status = 400;
