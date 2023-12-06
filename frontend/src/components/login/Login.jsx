@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './Login.css';
+import serverUrl from '../../serverURL.json';
 
 function Login() {
   const [loginInput, setLoginInput] = useState({
@@ -14,9 +15,33 @@ function Login() {
     }));
   };
 
-  const submitLogIn = (event) => {
+  const submitLogIn = async (event) => {
     event.preventDefault();
-    console.log(loginInput);
+
+    const res = await fetch(`${serverUrl.url}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: loginInput.login,
+        password: loginInput.password,
+      }),
+    });
+    if (res.status !== 200) {
+      console.log(await res.json());
+      return;
+    }
+    const dataToSave = await res.json();
+
+    // save needed information in local storage
+    localStorage.setItem('token', dataToSave.token);
+    localStorage.setItem('username', dataToSave.username);
+    localStorage.setItem('isAdmin', dataToSave.isAdmin);
+    const expiration = new Date().getTime() + (1000 * 60 * 15);
+    localStorage.setItem('expires', expiration);
+
+    // reload the page
+    window.location.reload();
+
     setLoginInput({
       login: '',
       password: '',

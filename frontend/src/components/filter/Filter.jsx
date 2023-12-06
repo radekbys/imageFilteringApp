@@ -65,28 +65,9 @@ function Filter() {
       console.log(await res.json());
       return;
     }
-    const res2 = await fetch(`${serverUrl.url}/filter/?username=${'dummyUser'}&type=${file.type}`, { // <-- change dummyUser
-      method: 'GET',
-    });
-    if (res2.status !== 200) {
-      console.log(await res.json());
-      return;
-    }
-    const output = await res2.json();
+
+    const output = await res.json();
     setOutputBase64Url(`data:${file.type};base64,${output}`);
-    const res3 = await fetch(`${serverUrl.url}/filter`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        type: file.type,
-        username: 'dummyUser', // <-- change dummyUser
-      }),
-    });
-    if (res3.status !== 200) {
-      console.log(await res.json());
-    }
   };
 
   return (

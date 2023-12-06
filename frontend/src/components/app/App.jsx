@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Nav from '../nav/Nav';
 import Filter from '../filter/Filter';
@@ -35,6 +35,15 @@ function App() {
       administration: false,
     });
   };
+
+  // clearing local storage if token expired
+  useEffect(() => {
+    const expiration = localStorage.getItem('expires');
+    const now = new Date().getTime();
+    if (now > expiration) {
+      localStorage.clear();
+    }
+  }, []);
 
   return (
     <div className="App">

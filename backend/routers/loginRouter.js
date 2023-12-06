@@ -15,6 +15,11 @@ loginRouter.post('/', async (req, res) => {
     const { secret } = JSON.parse(secretJson);
 
     const user = await dbHandler.getUser(username);
+    if (!user) {
+      const error = new Error('Wrong username or password');
+      error.status = 400;
+      throw error;
+    }
     if (sha256(password) !== user.passwordHash) {
       const error = new Error('Wrong username or password');
       error.status = 400;
@@ -24,7 +29,7 @@ loginRouter.post('/', async (req, res) => {
     // delete unnecessary information from object
     const toTokenObject = { username: user.username };
 
-    const token = jwt.sign(toTokenObject, secret, { expiresIn: '1h' });
+    const token = jwt.sign(toTokenObject, secret, { expiresIn: 60 * 30 });
     const responseObject = {
       message: 'logged in successfully',
       isAdmin: user.isAdmin,
