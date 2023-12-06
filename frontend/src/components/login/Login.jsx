@@ -36,7 +36,7 @@ function Login() {
     localStorage.setItem('token', dataToSave.token);
     localStorage.setItem('username', dataToSave.username);
     localStorage.setItem('isAdmin', dataToSave.isAdmin);
-    const expiration = new Date().getTime() + (1000 * 60 * 15);
+    const expiration = new Date().getTime() + (1000 * 60 * 30);
     localStorage.setItem('expires', expiration);
 
     // reload the page

@@ -44,19 +44,20 @@ function Filter() {
     setFilter(e.target.value);
   };
 
-  // when file or filter change and both are selected send file for filtration
+  // send file for filtration
   // in next step get filtered image and set it as outputBase64
   const filterAndRetriveImage = async (event) => {
     event.preventDefault();
     const res = await fetch(`${serverUrl.url}/filter`, {
       method: 'POST',
       headers: {
+        'Json-Web-Token': String(localStorage.getItem('token')),
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         'filter-name': filter,
         type: file.type,
-        user: 'dummyUser', // <-- change dummyUser
+        user: localStorage.getItem('username'),
         epsilon: epsilonParameter,
         'file-base64': fileBase64,
       }),

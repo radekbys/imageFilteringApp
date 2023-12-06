@@ -28,7 +28,10 @@ function NewUserForm(props) {
 
     const res = await fetch(`${serverUrl.url}/admin/user`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Json-Web-Token': String(localStorage.getItem('token')),
+      },
       body: JSON.stringify(newUser),
     });
 

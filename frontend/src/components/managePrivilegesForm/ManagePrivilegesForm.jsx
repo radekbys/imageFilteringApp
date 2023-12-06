@@ -47,7 +47,10 @@ function ManagePrivilegesForm(props) {
 
     const res = await fetch(`${serverUrl.url}/admin/user`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Json-Web-Token': String(localStorage.getItem('token')),
+      },
       body: JSON.stringify(requestObject),
     });
 

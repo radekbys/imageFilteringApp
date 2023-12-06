@@ -37,6 +37,9 @@ function Admin() {
     const sequence = async () => {
       const res = await fetch(`${serverUrl.url}/admin/user`, {
         method: 'GET',
+        headers: {
+          'Json-Web-Token': String(localStorage.getItem('token')),
+        },
       });
 
       if (res.status !== 200) {

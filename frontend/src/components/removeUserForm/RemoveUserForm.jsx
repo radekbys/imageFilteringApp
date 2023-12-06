@@ -19,7 +19,10 @@ function RemoveUserForm(props) {
 
     const res = await fetch(`${serverUrl.url}/admin/user`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Json-Web-Token': String(localStorage.getItem('token')),
+      },
       body: JSON.stringify(removedUser),
     });
 
