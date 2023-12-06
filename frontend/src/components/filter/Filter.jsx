@@ -25,7 +25,7 @@ function Filter() {
       setFileBase64(Base64);
     };
     reader.onerror = (error) => {
-      console.log('Error: ', error);
+      window.alert(`Error ${error.message}`);
     };
   };
 
@@ -63,7 +63,7 @@ function Filter() {
       }),
     });
     if (res.status !== 200) {
-      console.log(await res.json());
+      window.alert(`Error ${(await res.json()).error}`);
       return;
     }
 

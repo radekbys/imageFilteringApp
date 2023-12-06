@@ -36,7 +36,7 @@ function NewUserForm(props) {
     });
 
     if (res.status !== 200) {
-      console.log(await res.json());
+      window.alert(`Error ${(await res.json()).error}`);
       return;
     }
 
