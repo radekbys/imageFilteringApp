@@ -1,15 +1,62 @@
+/* eslint-disable import/extensions */
 import express from 'express';
 import { writeFile, readFile, unlink } from 'fs/promises';
-// import { v4 as uuidv4 } from 'uuid';
 import util from 'util';
 import { exec } from 'child_process';
 import { resolve } from 'path';
+import jwt from 'jsonwebtoken';
+import dbHandler from '../utils/DatabaseHandler.js';
 
 const filterRouter = express.Router();
 const promisifiedExec = util.promisify(exec);
 
+const authorization = async (req, res, next) => {
+  try {
+    const webToken = req.headers['json-web-token'];
+
+    // check if web token has been send
+    if (!webToken) {
+      const error = new Error('Request lacks authorization token');
+      error.status = 401;
+      throw error;
+    }
+
+    // read the secret from file
+    const secretJson = await readFile('./JWTsecret.json', { encoding: 'utf8' });
+    const { secret } = JSON.parse(secretJson);
+
+    // check authorization token
+    let throwError = false;
+    let username = '';
+    jwt.verify(webToken, secret, async (err, user) => {
+      if (err) {
+        throwError = true;
+        return;
+      }
+      username = user.username;
+    });
+    if (throwError) {
+      const error = new Error('authorization failed, try reloging');
+      error.status = 403;
+      throw error;
+    }
+
+    // checks if such user exists
+    const user = await dbHandler.getUser(username);
+    if (!user) {
+      const error = new Error('no such user exists, try reloging');
+      error.status = 403;
+      throw error;
+    }
+    next();
+  } catch (error) {
+    res.status(error.status || 500);
+    res.send({ error: error.message });
+  }
+};
+
 filterRouter
-  .post('/', async (req, res) => {
+  .post('/', authorization, async (req, res) => {
     try {
       const filterName = req.body['filter-name'];
       let filenameExtension;

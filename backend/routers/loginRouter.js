@@ -26,7 +26,6 @@ loginRouter.post('/', async (req, res) => {
       throw error;
     }
 
-    // delete unnecessary information from object
     const toTokenObject = { username: user.username };
 
     const token = jwt.sign(toTokenObject, secret, { expiresIn: 60 * 30 });

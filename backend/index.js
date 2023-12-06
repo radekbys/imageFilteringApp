@@ -36,10 +36,6 @@ app.use('/filter', filterRouter);
 app.use('/admin', adminRouter);
 app.use('/login', loginRouter);
 
-app.get('/', (req, res) => {
-  res.json('Welcome');
-});
-
 app.listen(3000, () => {
   console.log('App listening on port 3000!');
 });
