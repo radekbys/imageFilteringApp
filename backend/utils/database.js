@@ -1,16 +1,18 @@
 import mysql from 'mysql2';
-import { readFileSync } from 'fs';
+import dotenv from 'dotenv';
 
-const infoJson = readFileSync('./databaseInfo.json', { encoding: 'utf8' });
-const {
-  databaseName, ipAddress, username, password,
-} = JSON.parse(infoJson);
+dotenv.config();
+
+const host = process.env.DATABASE_IP_ADDRESS;
+const user = process.env.DATABASE_USERNAME;
+const password = process.env.DATABASE_PASSWORD;
+const database = process.env.DATABASE_NAME;
 
 const pool = mysql.createPool({
-  host: ipAddress,
-  user: username,
+  host,
+  user,
   password,
-  database: databaseName,
+  database,
 }).promise();
 
 export default pool;

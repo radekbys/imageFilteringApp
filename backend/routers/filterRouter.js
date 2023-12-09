@@ -22,8 +22,7 @@ const authorization = async (req, res, next) => {
     }
 
     // read the secret from file
-    const secretJson = await readFile('./JWTsecret.json', { encoding: 'utf8' });
-    const { secret } = JSON.parse(secretJson);
+    const secret = process.env.SECRET_JWT;
 
     // check authorization token
     let throwError = false;

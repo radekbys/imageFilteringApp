@@ -1,6 +1,5 @@
 /* eslint-disable import/extensions */
 import express from 'express';
-import { readFile } from 'fs/promises';
 import { sha256 } from 'js-sha256';
 import jwt from 'jsonwebtoken';
 import dbHandler from '../utils/DatabaseHandler.js';
@@ -11,8 +10,7 @@ loginRouter.post('/', async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const secretJson = await readFile('./JWTsecret.json', { encoding: 'utf8' });
-    const { secret } = JSON.parse(secretJson);
+    const secret = process.env.SECRET_JWT;
 
     const user = await dbHandler.getUser(username);
     if (!user) {
