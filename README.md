@@ -23,4 +23,5 @@ Tech stack:
 - express.js
 - React
 - C
-- cJSON library
+- jsonwebtoken module
+- dotenv module
