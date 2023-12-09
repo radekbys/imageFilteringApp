@@ -24,7 +24,4 @@ Tech stack:
 - React
 - C
 - jsonwebtoken module
-<<<<<<< HEAD
 - dotenv module
-=======
->>>>>>> refs/remotes/origin/main
