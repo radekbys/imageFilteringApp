@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import './NewUserForm.css';
-import serverUrl from '../../serverURL.json';
 
 function NewUserForm(props) {
   const { toggleRefreshUsers } = props;
@@ -26,7 +25,7 @@ function NewUserForm(props) {
   const submitNewUser = async (event) => {
     event.preventDefault();
 
-    const res = await fetch(`${serverUrl.url}/admin/user`, {
+    const res = await fetch(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/admin/user`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,7 +1,6 @@
 /* eslint-disable import/extensions */
 import express from 'express';
 import { sha256 } from 'js-sha256';
-import { readFile } from 'fs/promises';
 import jwt from 'jsonwebtoken';
 import dbHandler from '../utils/DatabaseHandler.js';
 
@@ -19,8 +18,7 @@ const authorization = async (req, res, next) => {
     }
 
     // read the secret from file
-    const secretJson = await readFile('./JWTsecret.json', { encoding: 'utf8' });
-    const { secret } = JSON.parse(secretJson);
+    const secret = process.env.SECRET_JWT;
 
     // check authorization token
     let throwError = false;

@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import './RemoveUserForm.css';
-import serverUrl from '../../serverURL.json';
 
 function RemoveUserForm(props) {
   const { toggleRefreshUsers } = props;
@@ -17,7 +16,7 @@ function RemoveUserForm(props) {
   const removeUser = async (event) => {
     event.preventDefault();
 
-    const res = await fetch(`${serverUrl.url}/admin/user`, {
+    const res = await fetch(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/admin/user`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

@@ -20,14 +20,6 @@ function App() {
     });
   };
 
-  const toggleLogin = () => {
-    setMain({
-      login: true,
-      filtration: false,
-      administration: false,
-    });
-  };
-
   const toggleFiltration = () => {
     setMain({
       login: false,
@@ -42,6 +34,19 @@ function App() {
     const now = new Date().getTime();
     if (now > expiration) {
       localStorage.clear();
+      setMain({
+        login: true,
+        filtration: false,
+        administration: false,
+      });
+      // reload window only once after clearing local storage
+      const reloadCount = sessionStorage.getItem('reloadCount');
+      if (reloadCount < 2) {
+        sessionStorage.setItem('reloadCount', String(reloadCount + 1));
+        window.location.reload();
+      } else {
+        sessionStorage.removeItem('reloadCount');
+      }
     }
   }, []);
 
@@ -49,7 +54,6 @@ function App() {
     <div className="App">
       <Nav
         toggleAdmin={toggleAdmin}
-        toggleLogin={toggleLogin}
         toggleFiltration={toggleFiltration}
       />
       {main.filtration && <Filter />}

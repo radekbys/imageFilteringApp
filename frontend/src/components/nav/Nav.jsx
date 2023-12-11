@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import './Nav.css';
 
-function Nav({ toggleLogin, toggleFiltration, toggleAdmin }) {
+function Nav({ toggleFiltration, toggleAdmin }) {
   const [filterDisabled, setFilterDisabled] = useState(true);
   const [adminDisabled, setAdminDisabled] = useState(true);
 
@@ -10,6 +10,11 @@ function Nav({ toggleLogin, toggleFiltration, toggleAdmin }) {
     setFilterDisabled(!localStorage.getItem('username'));
     setAdminDisabled(!Number(localStorage.getItem('isAdmin')));
   }, []);
+
+  const logout = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
 
   return (
     <div>
@@ -20,9 +25,9 @@ function Nav({ toggleLogin, toggleFiltration, toggleAdmin }) {
             <button
               type="button"
               className="nav-bar--button"
-              onClick={toggleLogin}
+              onClick={logout}
             >
-              LOG
+              LOGOUT
             </button>
           </li>
           <li className="navigation-bar--element">
@@ -32,7 +37,7 @@ function Nav({ toggleLogin, toggleFiltration, toggleAdmin }) {
               onClick={toggleFiltration}
               disabled={filterDisabled}
             >
-              FIL
+              FILTER
             </button>
           </li>
           <li className="navigation-bar--element">
@@ -42,7 +47,7 @@ function Nav({ toggleLogin, toggleFiltration, toggleAdmin }) {
               onClick={toggleAdmin}
               disabled={adminDisabled}
             >
-              ADM
+              ADMIN
             </button>
           </li>
         </ul>

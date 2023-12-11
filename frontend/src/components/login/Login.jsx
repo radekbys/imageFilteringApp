@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import './Login.css';
-import serverUrl from '../../serverURL.json';
 
-function Login() {
+function Login(props) {
+  const { toggleFiltration } = props;
+
   const [loginInput, setLoginInput] = useState({
     login: '',
     password: '',
@@ -18,7 +20,7 @@ function Login() {
   const submitLogIn = async (event) => {
     event.preventDefault();
 
-    const res = await fetch(`${serverUrl.url}/login`, {
+    const res = await fetch(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -46,6 +48,8 @@ function Login() {
       login: '',
       password: '',
     });
+
+    toggleFiltration();
   };
 
   return (

@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import './Filter.css';
 import FiltersSpan from '../filtersSpan/FiltersSpan';
-import serverUrl from '../../serverURL.json';
 
 function Filter() {
   const [file, setFile] = useState(undefined);
@@ -48,7 +47,7 @@ function Filter() {
   // in next step get filtered image and set it as outputBase64
   const filterAndRetriveImage = async (event) => {
     event.preventDefault();
-    const res = await fetch(`${serverUrl.url}/filter`, {
+    const res = await fetch(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/filter`, {
       method: 'POST',
       headers: {
         'Json-Web-Token': String(localStorage.getItem('token')),

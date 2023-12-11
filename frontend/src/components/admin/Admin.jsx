@@ -3,7 +3,6 @@ import './Admin.css';
 import NewUserForm from '../newUserForm/NewUserForm';
 import RemoveUserForm from '../removeUserForm/RemoveUserForm';
 import ManagePrivilegesForm from '../managePrivilegesForm/ManagePrivilegesForm';
-import serverUrl from '../../serverURL.json';
 
 function Admin() {
   // eslint-disable-next-line no-unused-vars
@@ -35,7 +34,7 @@ function Admin() {
 
   useEffect(() => {
     const sequence = async () => {
-      const res = await fetch(`${serverUrl.url}/admin/user`, {
+      const res = await fetch(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/admin/user`, {
         method: 'GET',
         headers: {
           'Json-Web-Token': String(localStorage.getItem('token')),

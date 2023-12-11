@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import './ManagePrivilegesForm.css';
-import serverUrl from '../../serverURL.json';
 
 function ManagePrivilegesForm(props) {
   const { toggleRefreshUsers } = props;
@@ -45,7 +44,7 @@ function ManagePrivilegesForm(props) {
       isAdmin: managePrivilegesInputs.giveAdmin,
     };
 
-    const res = await fetch(`${serverUrl.url}/admin/user`, {
+    const res = await fetch(`${import.meta.env.VITE_REACT_APP_SERVER_URL}/admin/user`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
