@@ -2,9 +2,7 @@
 import { useState } from 'react';
 import './Login.css';
 
-function Login(props) {
-  const { toggleFiltration } = props;
-
+function Login() {
   const [loginInput, setLoginInput] = useState({
     login: '',
     password: '',
@@ -48,8 +46,6 @@ function Login(props) {
       login: '',
       password: '',
     });
-
-    toggleFiltration();
   };
 
   return (

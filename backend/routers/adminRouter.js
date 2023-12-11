@@ -21,20 +21,7 @@ const authorization = async (req, res, next) => {
     const secret = process.env.SECRET_JWT;
 
     // check authorization token
-    let throwError = false;
-    let username = '';
-    jwt.verify(webToken, secret, async (err, user) => {
-      if (err) {
-        throwError = true;
-        return;
-      }
-      username = user.username;
-    });
-    if (throwError) {
-      const error = new Error('authorization failed, try reloging');
-      error.status = 403;
-      throw error;
-    }
+    const { username } = jwt.verify(webToken, secret);
 
     // checks if such user exists
     const user = await dbHandler.getUser(username);
@@ -52,6 +39,7 @@ const authorization = async (req, res, next) => {
     next();
   } catch (error) {
     res.status(error.status || 500);
+    if (error.message === 'jwt expired') error.message += ', try reloging';
     res.send({ error: error.message });
   }
 };
