@@ -19,23 +19,6 @@ app.use(bodyParser.raw({
   type: 'image/png',
   limit: '50mb',
 }));
-app.use(bodyParser.raw({
-  type: 'image/gif',
-  limit: '50mb',
-}));
-app.use(bodyParser.raw({
-  type: 'image/jpeg',
-  limit: '50mb',
-}));
-app.use(bodyParser.raw({
-  type: 'image/bmp',
-  limit: '50mb',
-}));
-app.use(bodyParser.raw({
-  type: 'image/tiff',
-  limit: '50mb',
-}));
-
 app.use('/filter', filterRouter);
 app.use('/admin', adminRouter);
 app.use('/login', loginRouter);
