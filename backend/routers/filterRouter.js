@@ -5,6 +5,7 @@ import util from 'util';
 import { exec } from 'child_process';
 import { resolve } from 'path';
 import jwt from 'jsonwebtoken';
+import sanitize from 'sanitize-filename';
 import dbHandler from '../utils/DatabaseHandler.js';
 
 const filterRouter = express.Router();
@@ -25,7 +26,8 @@ const authorization = async (req, res, next) => {
     const secret = process.env.SECRET_JWT;
 
     // check authorization token
-    const { username } = jwt.verify(webToken, secret);
+    let { username } = jwt.verify(webToken, secret);
+    username = sanitize(username);
 
     // checks if such user exists
     const user = await dbHandler.getUser(username);
@@ -65,16 +67,17 @@ filterRouter
 
       // save and filter the file
       const path = resolve('../filterApp/index.js');
-      const command = `node ${path} ${filterName} ${`${req.body.user}-input${filenameExtension}`} ${`${req.body.user}-output${filenameExtension}`} ${Number(req.body.epsilon)}`;
-      await writeFile(`../images/${req.body.user}-input${filenameExtension}`, req.body['file-base64'], { encoding: 'base64' });
+      const username = sanitize(req.body.user);
+      const command = `node ${path} ${filterName} ${`${username}-input${filenameExtension}`} ${`${username}-output${filenameExtension}`} ${Number(req.body.epsilon)}`;
+      await writeFile(`../images/${username}-input${filenameExtension}`, req.body['file-base64'], { encoding: 'base64' });
       await promisifiedExec(command);
 
       // read the output file
-      const output = await readFile(`../images/${req.body.user}-output${filenameExtension}`, 'base64');
+      const output = await readFile(`../images/${username}-output${filenameExtension}`, 'base64');
 
       // clean up
-      const path1 = resolve('../images/', `${req.body.user}-input${filenameExtension}`);
-      const path2 = resolve('../images/', `${req.body.user}-output${filenameExtension}`);
+      const path1 = resolve('../images/', `${username}-input${filenameExtension}`);
+      const path2 = resolve('../images/', `${username}-output${filenameExtension}`);
       await unlink(path1);
       await unlink(path2);
 
