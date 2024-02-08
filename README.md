@@ -12,8 +12,4 @@ Project consists of:
 -Single table MySQL database, which stores registered users with their password hashes
 
 
-Technologies used:
--JavaScript
--React
--Express.js
--C (for multithreaded algorithms)
+Technologies used: JavaScript, React, Express.js, C (for multithreaded algorithms)
